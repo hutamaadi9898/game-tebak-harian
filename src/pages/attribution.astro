@@ -2,8 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import peopleData from '../data/people.json';
 
-const title = 'Atribusi | Siapa Lebih Tua?';
-const description = 'Daftar atribusi sumber gambar dan data Wikidata/Wikimedia Commons yang digunakan di Siapa Lebih Tua?';
+const title = 'Attribution | Who’s Older?';
+const description = 'Attribution for image and data sources (Wikidata/Wikimedia Commons) used in Who’s Older?';
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "WebPage",
@@ -16,9 +16,9 @@ const structuredData = {
 <Layout title={title} description={description} structuredData={structuredData}>
   <main class="max-w-5xl mx-auto p-6 sm:p-8">
     <div class="bg-slate-900/70 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
-      <div class="inline-flex items-center px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] bg-indigo-500/10 text-indigo-100 border border-indigo-400/30">Atribusi</div>
-      <h1 class="text-4xl font-black text-white">Atribusi</h1>
-      <p class="text-slate-200">Gambar dan data disediakan oleh Wikidata dan Wikimedia Commons di bawah lisensi Creative Commons.</p>
+      <div class="inline-flex items-center px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] bg-indigo-500/10 text-indigo-100 border border-indigo-400/30">Attribution</div>
+      <h1 class="text-4xl font-black text-white">Attribution</h1>
+      <p class="text-slate-200">Images and data are provided by Wikidata and Wikimedia Commons under Creative Commons licenses.</p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         {peopleData.map(person => (
@@ -27,7 +27,7 @@ const structuredData = {
             <div class="overflow-hidden">
               <div class="font-semibold text-white truncate">{person.name}</div>
               <a href={person.image} target="_blank" rel="noopener noreferrer" class="text-xs text-sky-300 hover:text-white underline-offset-4 hover:underline truncate block">
-                  Sumber Gambar
+                  Image source
               </a>
             </div>
           </div>
@@ -35,7 +35,7 @@ const structuredData = {
       </div>
 
       <div class="pt-4">
-          <a href="/" class="inline-flex items-center gap-2 text-sky-300 hover:text-white font-semibold transition">&larr; Kembali ke Game</a>
+          <a href="/" class="inline-flex items-center gap-2 text-sky-300 hover:text-white font-semibold transition">&larr; Back to game</a>
       </div>
     </div>
   </main>

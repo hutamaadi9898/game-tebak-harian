@@ -50,6 +50,12 @@ interface PersonCardProps {
     isWrong: boolean;
 }
 
+interface StreakInfo {
+    streak: number;
+    best: number;
+    lastDate: string | null;
+}
+
 export default function GameIsland() {
     const [gameData, setGameData] = useState<GameData | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -65,6 +71,7 @@ export default function GameIsland() {
     const [email, setEmail] = useState('');
     const [emailStatus, setEmailStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
     const [alreadyPlayed, setAlreadyPlayed] = useState(false);
+    const [streakInfo, setStreakInfo] = useState<StreakInfo | null>(null);
 
     useEffect(() => {
         const loadGame = async () => {
@@ -74,7 +81,7 @@ export default function GameIsland() {
             setClientId(newId);
 
             try {
-                const res = await fetch('/api/today?v=2', { headers: { 'Accept-Language': 'id' } });
+                const res = await fetch('/api/today?v=2', { headers: { 'Accept-Language': 'en' } });
                 if (!res.ok) throw new Error('Gagal memuat tantangan');
                 const data = await res.json();
                 setGameData(data);
@@ -82,13 +89,24 @@ export default function GameIsland() {
                 if (playedDate === data.date) {
                     setAlreadyPlayed(true);
                     setGameState('finished');
-                    setToast({ message: 'Kamu sudah main hari ini. Kembali besok!', tone: 'error' });
+                    setToast({ message: 'You already played today. Come back tomorrow!', tone: 'error' });
                 } else {
                     setGameState('playing');
                 }
+
+                // fetch streak info
+                try {
+                    const streakRes = await fetch(`/api/streak?clientId=${newId}`, { headers: { 'Accept-Language': 'en' } });
+                    if (streakRes.ok) {
+                        const s = await streakRes.json();
+                        setStreakInfo(s as StreakInfo);
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
             } catch (err) {
                 console.error(err);
-                setError('Gagal memuat tantangan hari ini. Coba muat ulang.');
+                setError('Unable to load today’s challenge. Please reload.');
                 setGameState('finished');
                 reportClientError(err as Error, { scope: 'load-game' });
             }
@@ -154,7 +172,7 @@ export default function GameIsland() {
                 })
             });
             if (res.status === 409) {
-                setToast({ message: 'Kamu sudah main hari ini. Kembali besok!', tone: 'error' });
+                setToast({ message: 'You already played today. Come back tomorrow!', tone: 'error' });
                 setAlreadyPlayed(true);
                 return;
             }
@@ -164,6 +182,7 @@ export default function GameIsland() {
                 confetti({ particleCount: 150, spread: 100 });
             }
             localStorage.setItem('slt-played-date', gameData.date);
+            if (data.streak) setStreakInfo(data.streak);
         } catch (e) {
             console.error(e);
             reportClientError(e as Error, { scope: 'submit-score' });
@@ -192,13 +211,13 @@ export default function GameIsland() {
         return (
             <div className="text-center p-8 bg-slate-800/80 backdrop-blur-md rounded-3xl shadow-2xl border border-slate-700 max-w-sm mx-auto mt-10">
                 <div className="text-4xl mb-4">😕</div>
-                <h2 className="text-2xl font-bold mb-3 text-white">Ada kendala</h2>
+                <h2 className="text-2xl font-bold mb-3 text-white">Something went wrong</h2>
                 <p className="text-slate-400 mb-6">{error}</p>
                 <button
                     onClick={() => window.location.reload()}
                     className="bg-white text-slate-900 px-6 py-3 rounded-full font-bold hover:bg-slate-200 transition active:scale-95"
                 >
-                    Muat ulang
+                    Reload
                 </button>
             </div>
         );
@@ -209,8 +228,8 @@ export default function GameIsland() {
             <div className="text-center p-8 bg-slate-800/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-700/50 max-w-sm mx-auto mt-4 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
 
-                <h2 className="text-3xl font-black mb-2 text-white tracking-tight">Permainan Selesai!</h2>
-                <p className="text-slate-400 mb-6 text-sm">Tantangan hari ini tuntas.</p>
+                <h2 className="text-3xl font-black mb-2 text-white tracking-tight">Done for today!</h2>
+                <p className="text-slate-400 mb-6 text-sm">Come back tomorrow for a new set.</p>
 
                 <div className="relative inline-block mb-8">
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 blur-xl opacity-50 rounded-full"></div>
@@ -226,59 +245,59 @@ export default function GameIsland() {
                             <div className="text-xl font-black text-orange-400">🔥 {resultData.streak.streak}</div>
                         </div>
                         <div className="bg-slate-900/50 p-3 rounded-2xl border border-slate-700/50">
-                            <div className="text-xs text-slate-400 uppercase tracking-wider font-bold mb-1">Terbaik</div>
-                            <div className="text-xl font-black text-emerald-400">🏆 {resultData.streak.best}</div>
-                        </div>
-                    </div>
-                )}
+                <div className="text-xs text-slate-400 uppercase tracking-wider font-bold mb-1">Best</div>
+                <div className="text-xl font-black text-emerald-400">🏆 {resultData.streak.best}</div>
+            </div>
+        </div>
+    )}
 
-                <div className="bg-slate-900/80 border border-slate-700 rounded-2xl p-5 text-left mb-8">
-                    <div className="font-bold mb-2 text-white text-sm">Dapatkan notifikasi & recap? 📩</div>
-                    <div className="flex flex-col gap-3">
-                        <input
-                            type="email"
-                            value={email}
-                            onInput={(e: any) => setEmail(e.target.value)}
-                            className="w-full rounded-xl border border-slate-600 bg-slate-800 px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
-                            placeholder="email@kamu.com"
-                            aria-label="Email opsional"
-                            disabled={emailStatus === 'loading' || emailStatus === 'done'}
-                        />
-                        <button
-                            onClick={async () => {
-                                if (!email) return;
-                                try {
-                                    setEmailStatus('loading');
-                                    const res = await fetch('/api/subscribe', {
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify({ email })
-                                    });
-                                    if (!res.ok) throw new Error('Gagal menyimpan');
-                                    setEmailStatus('done');
-                                    setToast({ message: 'Terima kasih! Email tersimpan.', tone: 'success' });
-                                } catch (err) {
-                                    console.error(err);
-                                    setEmailStatus('error');
-                                    setToast({ message: 'Email gagal dikirim', tone: 'error' });
-                                    reportClientError(err as Error, { scope: 'subscribe' });
-                                }
-                            }}
-                            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-3 rounded-xl font-bold hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-900/20"
-                            disabled={emailStatus === 'loading' || emailStatus === 'done'}
-                        >
-                            {emailStatus === 'loading' ? 'Mengirim...' : emailStatus === 'done' ? '✅ Tersimpan' : 'Kirim'}
-                        </button>
-                        <p className="text-[10px] text-slate-500 text-center">Kami menjaga privasimu. Unsubscribe kapan saja.</p>
-                    </div>
-                </div>
+    <div className="bg-slate-900/80 border border-slate-700 rounded-2xl p-5 text-left mb-8">
+        <div className="font-bold mb-2 text-white text-sm">Get updates & weekly recap? 📩</div>
+        <div className="flex flex-col gap-3">
+            <input
+                type="email"
+                value={email}
+                onInput={(e: any) => setEmail(e.target.value)}
+                className="w-full rounded-xl border border-slate-600 bg-slate-800 px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                placeholder="email@example.com"
+                aria-label="Optional email"
+                disabled={emailStatus === 'loading' || emailStatus === 'done'}
+            />
+            <button
+                onClick={async () => {
+                    if (!email) return;
+                    try {
+                        setEmailStatus('loading');
+                        const res = await fetch('/api/subscribe', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email })
+                        });
+                        if (!res.ok) throw new Error('Failed to save');
+                        setEmailStatus('done');
+                        setToast({ message: 'Thanks! Email saved.', tone: 'success' });
+                    } catch (err) {
+                        console.error(err);
+                        setEmailStatus('error');
+                        setToast({ message: 'Failed to save email', tone: 'error' });
+                        reportClientError(err as Error, { scope: 'subscribe' });
+                    }
+                }}
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-3 rounded-xl font-bold hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-900/20"
+                disabled={emailStatus === 'loading' || emailStatus === 'done'}
+            >
+                {emailStatus === 'loading' ? 'Sending...' : emailStatus === 'done' ? '✅ Saved' : 'Send'}
+            </button>
+            <p className="text-[10px] text-slate-500 text-center">Optional and hashed. Unsubscribe anytime.</p>
+        </div>
+    </div>
 
-                <button
-                    onClick={() => window.location.reload()}
-                    className="w-full bg-white text-slate-900 px-8 py-4 rounded-full font-black hover:bg-slate-200 transition transform hover:scale-[1.02] active:scale-[0.98]"
-                >
-                    Main Lagi
-                </button>
+    <button
+        onClick={() => window.location.reload()}
+        className="w-full bg-white text-slate-900 px-8 py-4 rounded-full font-black hover:bg-slate-200 transition transform hover:scale-[1.02] active:scale-[0.98]"
+    >
+        Play again (tomorrow)
+    </button>
             </div>
         );
     }
@@ -291,13 +310,13 @@ export default function GameIsland() {
         return (
             <div className="max-w-xl mx-auto p-6 sm:p-8 bg-slate-900/80 rounded-3xl border border-slate-800 shadow-2xl text-center space-y-4">
                 <div className="text-4xl">✅</div>
-                <h2 className="text-2xl font-black text-white">Sudah main hari ini</h2>
-                <p className="text-slate-300">Kembali lagi besok ({gameData.date}) untuk tantangan baru.</p>
+                <h2 className="text-2xl font-black text-white">You already played today</h2>
+                <p className="text-slate-300">Come back tomorrow ({gameData.date}) for a fresh challenge.</p>
                 <button
                     onClick={() => window.location.reload()}
                     className="bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold px-6 py-3 rounded-xl transition active:scale-95"
                 >
-                    Muat ulang
+                    Reload
                 </button>
             </div>
         );
@@ -317,9 +336,17 @@ export default function GameIsland() {
                 <div className="text-slate-400 text-xs font-bold uppercase tracking-widest">
                     {gameData?.date}
                 </div>
-                <div className="flex items-center gap-2">
-                    <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">Skor</span>
-                    <span className="text-2xl font-black text-white">{score}</span>
+                <div className="flex items-center gap-4">
+                    {streakInfo && (
+                        <div className="flex items-center gap-1 text-xs text-emerald-200 font-semibold bg-emerald-500/10 border border-emerald-400/30 px-3 py-1 rounded-full">
+                            <span>🔥 Streak {streakInfo.streak}</span>
+                            <span className="text-slate-400">· Best {streakInfo.best}</span>
+                        </div>
+                    )}
+                    <div className="flex items-center gap-2">
+                        <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">Score</span>
+                        <span className="text-2xl font-black text-white">{score}</span>
+                    </div>
                 </div>
             </div>
 

@@ -11,8 +11,8 @@ interface Props {
 }
 
 const {
-  title = 'Siapa Lebih Tua? | Game Tebak Umur Tokoh Indonesia',
-  description = 'Tebak siapa yang lebih tua di antara tokoh publik Indonesia. Tantangan baru setiap hari, ringan, dan ramah perangkat seluler.',
+  title = 'Who’s Older? | Daily Age Guessing Game',
+  description = 'Guess who is older between Indonesian public figures. New daily set, mobile-friendly, privacy-first.',
   canonical = Astro.url.href,
   image = `${Astro.url.origin}/og-image.svg`,
   noindex = false,
@@ -76,11 +76,11 @@ const jsonLd = Array.isArray(structuredData)
 		</div>
 		<footer class="py-8 text-center text-sm text-slate-400 border-t border-slate-800/50 mt-auto backdrop-blur-sm">
 			<div class="space-x-4 font-medium">
-				<a href="/about" class="hover:text-white transition-colors">Tentang</a>
-				<a href="/privacy" class="hover:text-white transition-colors">Privasi</a>
-				<a href="/contact" class="hover:text-white transition-colors">Kontak</a>
-				<a href="/attribution" class="hover:text-white transition-colors">Atribusi</a>
-				<a href="/arsip" class="hover:text-white transition-colors">Arsip</a>
+				<a href="/about" class="hover:text-white transition-colors">About</a>
+				<a href="/privacy" class="hover:text-white transition-colors">Privacy</a>
+				<a href="/contact" class="hover:text-white transition-colors">Contact</a>
+				<a href="/attribution" class="hover:text-white transition-colors">Attribution</a>
+				<a href="/arsip" class="hover:text-white transition-colors">Archive</a>
 			</div>
 			<div class="mt-4 opacity-60">
 				&copy; {new Date().getFullYear()} Siapa Lebih Tua?

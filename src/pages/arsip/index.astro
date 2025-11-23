@@ -8,24 +8,24 @@ const dates = Array.from({ length: 7 }, (_, i) => {
   return d.toISOString().split('T')[0];
 });
 
-const title = 'Arsip Tantangan Mingguan | Siapa Lebih Tua?';
-const description = 'Rekap dan arsip tantangan Siapa Lebih Tua? selama tujuh hari terakhir. Baca ulang duel, fun fact, dan bagikan hasilnya.';
+const title = 'Weekly Archive | Who’s Older?';
+const description = 'Archive of Who’s Older? challenges from the last seven days. Revisit duels and fun facts.';
 ---
 
 <Layout title={title} description={description} canonical={`${Astro.url.origin}/arsip`}>
   <main class="max-w-4xl mx-auto p-6 sm:p-8">
     <div class="bg-slate-900/70 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
-      <div class="inline-flex items-center px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] bg-sky-500/10 text-sky-100 border border-sky-400/30">Arsip Mingguan</div>
+      <div class="inline-flex items-center px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] bg-sky-500/10 text-sky-100 border border-sky-400/30">Weekly Archive</div>
       <header class="space-y-2 text-left">
-        <h1 class="text-4xl font-black text-white">Tantangan 7 Hari Terakhir</h1>
-        <p class="text-slate-300">Pilih tanggal untuk melihat duel dan fun fact yang pernah muncul.</p>
+        <h1 class="text-4xl font-black text-white">Last 7 Days</h1>
+        <p class="text-slate-300">Pick a date to see the duels and fun facts that appeared.</p>
       </header>
 
       <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {dates.map((date) => (
-          <a href={`/arsip/${date}`} class="block p-4 rounded-2xl border border-slate-800 bg-slate-900/60 shadow-lg hover:border-sky-500/40 hover:shadow-sky-900/50 transition" aria-label={`Lihat arsip tanggal ${date}`}>
-            <div class="text-sm text-slate-400">{new Date(date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
-            <div class="font-semibold text-white mt-1">Tantangan {date}</div>
+          <a href={`/arsip/${date}`} class="block p-4 rounded-2xl border border-slate-800 bg-slate-900/60 shadow-lg hover:border-sky-500/40 hover:shadow-sky-900/50 transition" aria-label={`View archive for ${date}`}>
+            <div class="text-sm text-slate-400">{new Date(date).toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
+            <div class="font-semibold text-white mt-1">Challenge {date}</div>
           </a>
         ))}
       </section>

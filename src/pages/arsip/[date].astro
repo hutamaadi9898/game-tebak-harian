@@ -19,10 +19,10 @@ const requested = date ? new Date(date) : null;
 const today = new Date();
 const isValid = !!date && !!requested && !Number.isNaN(requested.valueOf()) && requested <= today;
 const matchups = isValid ? generateMatchups(peopleData, date) : [];
-const title = isValid ? `Arsip ${date} | Siapa Lebih Tua?` : 'Tanggal arsip tidak ditemukan';
+const title = isValid ? `Archive ${date} | Who’s Older?` : 'Archive date not found';
 const description = isValid
-  ? `Lihat ulang duel dan fun fact yang tayang pada ${requested!.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}.`
-  : 'Tanggal arsip tidak tersedia atau formatnya salah.';
+  ? `Replay the duels and fun facts that appeared on ${requested!.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}.`
+  : 'Archive date is unavailable or invalid.';
 ---
 
 <Layout title={title} description={description} canonical={`${Astro.url.origin}/arsip/${date}`}>
@@ -31,9 +31,9 @@ const description = isValid
       {isValid ? (
         <>
           <header class="space-y-2">
-            <p class="text-xs uppercase tracking-[0.25em] text-slate-400 font-bold">Arsip</p>
-            <h1 class="text-4xl font-black text-white">Tantangan {date}</h1>
-            <p class="text-slate-300">Duel yang tayang pada tanggal ini, beserta tahun lahir dan fun fact singkat.</p>
+            <p class="text-xs uppercase tracking-[0.25em] text-slate-400 font-bold">Archive</p>
+            <h1 class="text-4xl font-black text-white">Challenge {date}</h1>
+            <p class="text-slate-300">Duels shown on this date, with birth years and short fun facts.</p>
           </header>
 
           <section class="space-y-4">
@@ -47,7 +47,7 @@ const description = isValid
                       <div class="space-y-1">
                         <div class="font-semibold text-white">{person.name}</div>
                         {person.occupation && <div class="text-xs uppercase tracking-wide text-slate-400">{person.occupation}</div>}
-                        <div class="text-sm text-sky-300 font-mono">Lahir {person.birthYear}</div>
+                        <div class="text-sm text-sky-300 font-mono">Born {person.birthYear}</div>
                         {person.funFact && <div class="text-sm text-slate-200">{person.funFact}</div>}
                       </div>
                     </div>
@@ -59,13 +59,13 @@ const description = isValid
         </>
       ) : (
         <div class="p-6 rounded-2xl bg-rose-900/30 border border-rose-700 text-rose-100">
-          Tanggal arsip tidak tersedia atau belum tayang.
+          Archive date is unavailable or not yet published.
         </div>
       )}
 
       <div class="pt-4 flex justify-between text-sm text-sky-300">
-        <a href="/" class="hover:text-white font-semibold">Main tantangan hari ini</a>
-        <a href="/arsip" class="hover:text-white font-semibold">Kembali ke arsip</a>
+        <a href="/" class="hover:text-white font-semibold">Play today’s challenge</a>
+        <a href="/arsip" class="hover:text-white font-semibold">Back to archive</a>
       </div>
     </div>
   </main>

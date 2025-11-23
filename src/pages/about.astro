@@ -1,8 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const title = 'Tentang | Siapa Lebih Tua?';
-const description = 'Gambaran singkat tentang game tebak umur harian Siapa Lebih Tua?, cara bermain, dan sumber data publik yang dipakai.';
+const title = 'About | Who’s Older?';
+const description = 'A quick overview of the daily age-guessing game Who’s Older?, how it works, and the public data sources used.';
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
@@ -15,24 +15,24 @@ const structuredData = {
 <Layout title={title} description={description} structuredData={structuredData}>
   <main class="max-w-3xl mx-auto p-6 sm:p-8">
     <div class="bg-slate-900/70 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
-      <div class="inline-flex items-center px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] bg-sky-500/10 text-sky-100 border border-sky-400/30">Tentang</div>
-      <h1 class="text-4xl font-black text-white">Tentang Siapa Lebih Tua?</h1>
-      <p class="text-slate-200">Siapa Lebih Tua? adalah permainan trivia harian untuk menebak siapa yang lebih tua di antara dua tokoh publik Indonesia.</p>
-      <p class="text-slate-300">Tantangan baru dirilis setiap hari pukul 00:00 WIB dengan seed deterministik agar semua pemain mendapatkan soal yang sama. Setiap hari ada 10 duel berisi figur modern (penyanyi, YouTuber, aktor, komedian).</p>
+      <div class="inline-flex items-center px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] bg-sky-500/10 text-sky-100 border border-sky-400/30">About</div>
+      <h1 class="text-4xl font-black text-white">About Who’s Older?</h1>
+      <p class="text-slate-200">Who’s Older? is a daily trivia game where you guess who is older between two Indonesian public figures.</p>
+      <p class="text-slate-300">New challenges drop every day at 00:00 WIB with a deterministic seed so everyone sees the same set. Each day brings 10 duels featuring modern figures (singers, YouTubers, actors, comedians).</p>
       
       <div class="space-y-3">
-        <h2 class="text-2xl font-bold text-white">Cara Bermain</h2>
+        <h2 class="text-2xl font-bold text-white">How to play</h2>
         <ul class="space-y-2 text-slate-200 list-disc list-inside">
-          <li>Anda akan disajikan dua orang tokoh.</li>
-          <li>Klik pada orang yang menurut Anda lebih tua.</li>
-          <li>Setelah memilih, Anda langsung melihat tahun kelahiran dan fun fact singkat.</li>
-          <li>Cobalah mendapatkan skor sempurna 10/10 dan lanjutkan streak harian Anda.</li>
-          <li>Anda hanya bisa bermain sekali per hari per perangkat (hindari kecurangan).</li>
+          <li>You’ll see two people per duel.</li>
+          <li>Tap the one you believe is older.</li>
+          <li>Reveal birth year and a quick fun fact instantly.</li>
+          <li>Push for a perfect 10/10 and keep your streak alive.</li>
+          <li>You can play once per day per device.</li>
         </ul>
       </div>
 
       <div class="pt-6">
-          <a href="/" class="inline-flex items-center gap-2 text-sky-300 hover:text-white font-semibold transition">&larr; Kembali ke Game</a>
+          <a href="/" class="inline-flex items-center gap-2 text-sky-300 hover:text-white font-semibold transition">&larr; Back to game</a>
       </div>
     </div>
   </main>
