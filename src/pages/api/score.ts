@@ -4,7 +4,8 @@ import peopleData from '../../data/people.json';
 import { generateMatchups } from '../../utils/game-logic';
 import { deriveClientId } from '../../utils/security';
 import { checkRateLimit } from '../../utils/rate-limit';
-import { updateStreak } from '../../utils/streaks';
+import { getLastDate, updateStreak } from '../../utils/streaks';
+import { ensureSchema } from '../../utils/db';
 
 export const prerender = false;
 
@@ -24,6 +25,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         const runtime = (locals as any).runtime;
         const secret = runtime?.env?.GAME_SECRET || (import.meta as any).env.GAME_SECRET || 'dev-secret';
         const db = runtime?.env?.STREAK_DB as D1Database | undefined;
+        if (db) await ensureSchema(db);
 
         // Reconstruct the expected payload from the date (we need to regenerate matchups to get the olderIds)
         const matchups = generateMatchups(peopleData, date, 10);
@@ -50,6 +52,15 @@ export const POST: APIRoute = async ({ request, locals }) => {
                     'Retry-After': String(rate.retryAfter ?? 60),
                     'Content-Language': 'id'
                 }
+            });
+        }
+
+        // 1c. Prevent multiple plays per day
+        const lastDate = await getLastDate(db, derivedClientId);
+        if (lastDate === date) {
+            return new Response('Kamu sudah main hari ini. Coba lagi besok.', {
+                status: 409,
+                headers: { 'Content-Language': 'id' }
             });
         }
 

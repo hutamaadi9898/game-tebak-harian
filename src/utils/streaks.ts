@@ -12,6 +12,13 @@ export interface StreakResult {
   lastDate: string;
 }
 
+export async function getLastDate(db: D1Database | undefined, clientId: string): Promise<string | null> {
+  if (!db) return null;
+  await ensureSchema(db);
+  const row = await db.prepare('SELECT last_date FROM streaks WHERE client_id = ?').bind(clientId).first<{ last_date: string }>();
+  return row?.last_date ?? null;
+}
+
 function daysBetween(dateA: string, dateB: string) {
   const oneDayMs = 24 * 60 * 60 * 1000;
   const a = new Date(dateA);

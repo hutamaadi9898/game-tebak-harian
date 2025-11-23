@@ -145,6 +145,10 @@ export default function GameIsland() {
                     clientId
                 })
             });
+            if (res.status === 409) {
+                setToast({ message: 'Kamu sudah main hari ini. Kembali besok!', tone: 'error' });
+                return;
+            }
             const data = await res.json();
             setResultData(data as ScoreResult);
             if (data.score === gameData.matchups.length) {
