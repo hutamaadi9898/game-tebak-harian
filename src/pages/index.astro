@@ -2,23 +2,23 @@
 import Layout from '../layouts/Layout.astro';
 import GameIsland from '../components/GameIsland';
 
-const description = 'Tantangan harian menebak siapa yang lebih tua di antara tokoh publik Indonesia. Main 10 duel singkat, lihat jawaban, dan kembali esok hari.';
+const description = 'Daily age-guess challenge featuring modern Indonesian public figures. Play 10 quick duels, reveal answers, keep your streak alive.';
 
 const structuredData = [
   {
     "@context": "https://schema.org",
     "@type": "Game",
-    name: "Siapa Lebih Tua?",
+    name: "Who is Older?",
     applicationCategory: "EducationalGame",
     operatingSystem: "Web",
-    inLanguage: "id",
+    inLanguage: "en",
     url: Astro.url.href,
     description
   },
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Siapa Lebih Tua?",
+    name: "Who is Older?",
     url: Astro.url.origin,
     potentialAction: {
       "@type": "PlayAction",
@@ -29,7 +29,7 @@ const structuredData = [
 ---
 
 <Layout
-  title="Siapa Lebih Tua? | Tantangan Tebak Umur Harian"
+  title="Who is Older? | Daily Age Guessing Game"
   description={description}
   structuredData={structuredData}
 >
@@ -41,13 +41,13 @@ const structuredData = [
 
     <div class="w-full max-w-4xl mx-auto text-center space-y-4 mb-8">
       <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-[0.2em] bg-sky-500/10 text-sky-100 border border-sky-400/30 shadow-lg shadow-sky-900/50">
-        Harian · 10 duel
+        Daily · 10 duels
       </div>
       <h1 class="text-5xl md:text-7xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-sky-200 via-cyan-100 to-emerald-200 drop-shadow">
-        Siapa Lebih Tua?
+        Who is Older?
       </h1>
       <p class="text-slate-200 max-w-2xl mx-auto text-lg md:text-xl font-medium leading-relaxed">
-        Tantangan harian menebak umur tokoh publik Indonesia. 10 duel figur modern—penyanyi, YouTuber, aktor, komedian. Pilih yang lebih tua, buka fakta singkat, jaga streakmu!
+        Daily guessing game with modern Indonesian public figures—YouTubers, singers, actors, comedians. Choose who is older in 10 duels, reveal quick facts, and keep your streak.
       </p>
     </div>
 		

@@ -39,18 +39,18 @@ export const POST: APIRoute = async ({ request, locals }) => {
         }
 
         if (answers.length !== matchups.length) {
-            return new Response('Jawaban tidak lengkap', { status: 400, headers: { 'Content-Language': 'id' } });
+            return new Response('Answers are incomplete', { status: 400, headers: { 'Content-Language': 'en' } });
         }
 
         // 1b. Rate limit per client
         const derivedClientId = await deriveClientId(secret, request, clientId);
         const rate = await checkRateLimit(db, derivedClientId);
         if (!rate.allowed) {
-            return new Response('Terlalu banyak percobaan. Coba lagi sebentar lagi.', {
+            return new Response('Too many attempts. Try again soon.', {
                 status: 429,
                 headers: {
                     'Retry-After': String(rate.retryAfter ?? 60),
-                    'Content-Language': 'id'
+                    'Content-Language': 'en'
                 }
             });
         }
@@ -58,9 +58,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
         // 1c. Prevent multiple plays per day
         const lastDate = await getLastDate(db, derivedClientId);
         if (lastDate === date) {
-            return new Response('Kamu sudah main hari ini. Coba lagi besok.', {
+            return new Response('You already played today. Come back tomorrow.', {
                 status: 409,
-                headers: { 'Content-Language': 'id' }
+                headers: { 'Content-Language': 'en' }
             });
         }
 
@@ -97,7 +97,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         }), {
             headers: {
                 'Content-Type': 'application/json',
-                'Content-Language': 'id'
+                'Content-Language': 'en'
             }
         });
 

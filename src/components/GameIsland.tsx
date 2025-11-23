@@ -56,6 +56,13 @@ interface StreakInfo {
     lastDate: string | null;
 }
 
+interface StoredResult {
+    date: string;
+    score: number;
+    total: number;
+    streak?: StreakInfo;
+}
+
 export default function GameIsland() {
     const [gameData, setGameData] = useState<GameData | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -82,13 +89,27 @@ export default function GameIsland() {
 
             try {
                 const res = await fetch('/api/today?v=2', { headers: { 'Accept-Language': 'en' } });
-                if (!res.ok) throw new Error('Gagal memuat tantangan');
+                if (!res.ok) throw new Error('Failed to load challenge');
                 const data = await res.json();
                 setGameData(data);
                 const playedDate = localStorage.getItem('slt-played-date');
                 if (playedDate === data.date) {
                     setAlreadyPlayed(true);
                     setGameState('finished');
+                    // Restore last known score from local cache so users still see their result
+                    const cached = localStorage.getItem('slt-last-result');
+                    if (cached) {
+                        try {
+                            const last: StoredResult = JSON.parse(cached);
+                            if (last.date === data.date) {
+                                setScore(last.score);
+                                setResultData({ score: last.score, total: last.total, results: [], streak: last.streak });
+                                if (last.streak) setStreakInfo(last.streak);
+                            }
+                        } catch (e) {
+                            console.error('Failed to parse cached result', e);
+                        }
+                    }
                     setToast({ message: 'You already played today. Come back tomorrow!', tone: 'error' });
                 } else {
                     setGameState('playing');
@@ -133,10 +154,10 @@ export default function GameIsland() {
         if (isCorrect) {
             setScore(s => s + 1);
             confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 } });
-            setToast({ message: 'Benar!', tone: 'success' });
+            setToast({ message: 'Correct!', tone: 'success' });
         }
         if (!isCorrect) {
-            setToast({ message: 'Kurang tepat, coba lagi!', tone: 'error' });
+            setToast({ message: 'Not quite, try again!', tone: 'error' });
         }
 
         setTimeout(() => setToast(null), 1400);
@@ -174,6 +195,19 @@ export default function GameIsland() {
             if (res.status === 409) {
                 setToast({ message: 'You already played today. Come back tomorrow!', tone: 'error' });
                 setAlreadyPlayed(true);
+                const cached = localStorage.getItem('slt-last-result');
+                if (cached) {
+                    try {
+                        const last: StoredResult = JSON.parse(cached);
+                        if (last.date === gameData.date) {
+                            setScore(last.score);
+                            setResultData({ score: last.score, total: last.total, results: [], streak: last.streak });
+                            if (last.streak) setStreakInfo(last.streak);
+                        }
+                    } catch (e) {
+                        console.error('Failed to parse cached result', e);
+                    }
+                }
                 return;
             }
             const data = await res.json();
@@ -182,6 +216,12 @@ export default function GameIsland() {
                 confetti({ particleCount: 150, spread: 100 });
             }
             localStorage.setItem('slt-played-date', gameData.date);
+            localStorage.setItem('slt-last-result', JSON.stringify({
+                date: gameData.date,
+                score: data.score,
+                total: gameData.matchups.length,
+                streak: data.streak ?? undefined
+            } satisfies StoredResult));
             if (data.streak) setStreakInfo(data.streak);
         } catch (e) {
             console.error(e);
@@ -350,11 +390,10 @@ export default function GameIsland() {
                 </div>
             </div>
 
-            <div className="relative w-full h-3 bg-slate-800 rounded-full overflow-hidden shadow-inner">
+            <div className="relative w-full h-3 bg-slate-800 rounded-full overflow-hidden shadow-inner" aria-hidden>
                 <div
                     className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transition-all duration-500 ease-out"
-                    style={{ width: `${((currentIndex) / (gameData.matchups.length)) * 100}%` }}
-                    aria-hidden
+                    style={{ width: `${Math.min(100, (gameState === 'finished' ? 1 : (currentIndex) / (gameData.matchups.length)) * 100)}%` }}
                 />
             </div>
 
@@ -363,7 +402,7 @@ export default function GameIsland() {
                         m.difficulty === 'medium' ? 'bg-amber-900 text-amber-100 border-amber-600/60' :
                             'bg-emerald-900 text-emerald-100 border-emerald-600/60'
                     }`}>
-                    Level: {m.difficulty === 'hard' ? 'Sulit' : m.difficulty === 'medium' ? 'Sedang' : 'Mudah'}
+                    Level: {m.difficulty === 'hard' ? 'Hard' : m.difficulty === 'medium' ? 'Medium' : 'Easy'}
                 </span>
             </div>
 
@@ -395,7 +434,7 @@ export default function GameIsland() {
 
             <div className="text-center mt-4">
                 <p className="text-slate-400 text-sm font-medium animate-pulse">
-                    Pilih yang <span className="text-white font-bold">lebih tua</span>
+                    Pick who is <span className="text-white font-bold">older</span>
                 </p>
             </div>
         </div>
@@ -426,7 +465,7 @@ export default function GameIsland() {
         <button
             onClick={onClick}
             disabled={state !== 'playing'}
-            aria-label={`Pilih ${person.name}`}
+            aria-label={`Choose ${person.name}`}
             className={`
                 relative group flex flex-col items-center p-6 rounded-3xl shadow-2xl 
                 transition-all duration-300 ease-out

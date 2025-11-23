@@ -54,8 +54,8 @@ export const GET: APIRoute = async ({ params, request, locals }) => {
   });
 
   if (!upstream.ok || !upstream.body) {
-    return new Response('Gagal memuat gambar', { status: 502, headers: { 'Content-Language': 'id' } });
-  }
+    return new Response('Failed to load image', { status: 502, headers: { 'Content-Language': 'en' } });
+}
 
   const contentLength = Number(upstream.headers.get('content-length') || '0');
   if (contentLength > MAX_BYTES) {

@@ -25,3 +25,4 @@
 - [x] Enforced single play per day per client with 409 guard + UI notice; balanced left/right answers by randomizing pair order and refreshed modern dark UI across pages.
 - [x] Added migration file for D1 (`scripts/migrations/streaks.sql`) for local/remote executes.
 - [x] UI Overhaul (Phase 3) - Redesigned for "Teenager" demographic: Dark mode default, "Outfit" font, glassmorphism cards, gradient accents, and custom animations (pop, fade-in-up).
+- 2025-11-23: Cached daily results to keep score visible after re-open, localized remaining Indonesian copy to English, and aligned OG metadata with the new branding.
