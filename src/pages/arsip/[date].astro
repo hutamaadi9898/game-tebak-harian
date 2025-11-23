@@ -26,45 +26,47 @@ const description = isValid
 ---
 
 <Layout title={title} description={description} canonical={`${Astro.url.origin}/arsip/${date}`}>
-  <main class="max-w-4xl mx-auto p-6 space-y-8">
-    {isValid ? (
-      <>
-        <header class="space-y-2">
-          <p class="text-sm uppercase tracking-[0.2em] text-gray-500">Arsip</p>
-          <h1 class="text-3xl font-black text-gray-900">Tantangan {date}</h1>
-          <p class="text-gray-600">Duel yang tayang pada tanggal ini, beserta tahun lahir dan fun fact singkat.</p>
-        </header>
+  <main class="max-w-5xl mx-auto p-6 sm:p-8">
+    <div class="bg-slate-900/70 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+      {isValid ? (
+        <>
+          <header class="space-y-2">
+            <p class="text-xs uppercase tracking-[0.25em] text-slate-400 font-bold">Arsip</p>
+            <h1 class="text-4xl font-black text-white">Tantangan {date}</h1>
+            <p class="text-slate-300">Duel yang tayang pada tanggal ini, beserta tahun lahir dan fun fact singkat.</p>
+          </header>
 
-        <section class="space-y-4">
-          {matchups.map((m, idx) => (
-            <article class="p-4 rounded-xl border border-gray-200 bg-white shadow-sm" aria-label={`Duel ${idx + 1}`}>
-              <div class="text-xs uppercase tracking-wide text-gray-500 mb-2">Duel {idx + 1} · {m.difficulty.toUpperCase()}</div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[m.personA, m.personB].map((person) => (
-                  <div class="flex items-start space-x-3">
-                    <img src={person.image} alt={person.name} width="80" height="80" loading="lazy" decoding="async" class="w-20 h-20 rounded-full object-cover border border-gray-200" />
-                    <div class="space-y-1">
-                      <div class="font-semibold text-gray-900">{person.name}</div>
-                      {person.occupation && <div class="text-xs uppercase tracking-wide text-gray-500">{person.occupation}</div>}
-                      <div class="text-sm text-blue-700 font-mono">Lahir {person.birthYear}</div>
-                      {person.funFact && <div class="text-sm text-gray-700">{person.funFact}</div>}
+          <section class="space-y-4">
+            {matchups.map((m, idx) => (
+              <article class="p-4 sm:p-5 rounded-2xl border border-slate-800 bg-slate-900/60 shadow-lg" aria-label={`Duel ${idx + 1}`}>
+                <div class="text-[11px] uppercase tracking-[0.25em] text-slate-400 mb-3 font-bold">Duel {idx + 1} · {m.difficulty.toUpperCase()}</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {[m.personA, m.personB].map((person) => (
+                    <div class="flex items-start space-x-3">
+                      <img src={`/api/image/${person.id}`} alt={person.name} width="80" height="80" loading="lazy" decoding="async" class="w-20 h-20 rounded-2xl object-cover border border-slate-800" />
+                      <div class="space-y-1">
+                        <div class="font-semibold text-white">{person.name}</div>
+                        {person.occupation && <div class="text-xs uppercase tracking-wide text-slate-400">{person.occupation}</div>}
+                        <div class="text-sm text-sky-300 font-mono">Lahir {person.birthYear}</div>
+                        {person.funFact && <div class="text-sm text-slate-200">{person.funFact}</div>}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </article>
-          ))}
-        </section>
-      </>
-    ) : (
-      <div class="p-6 rounded-xl bg-rose-50 border border-rose-200 text-rose-800">
-        Tanggal arsip tidak tersedia atau belum tayang.
-      </div>
-    )}
+                  ))}
+                </div>
+              </article>
+            ))}
+          </section>
+        </>
+      ) : (
+        <div class="p-6 rounded-2xl bg-rose-900/30 border border-rose-700 text-rose-100">
+          Tanggal arsip tidak tersedia atau belum tayang.
+        </div>
+      )}
 
-    <div class="pt-6 border-t border-gray-200 flex justify-between text-sm">
-      <a href="/" class="text-blue-600 hover:underline">Main tantangan hari ini</a>
-      <a href="/arsip" class="text-blue-600 hover:underline">Kembali ke arsip</a>
+      <div class="pt-4 flex justify-between text-sm text-sky-300">
+        <a href="/" class="hover:text-white font-semibold">Main tantangan hari ini</a>
+        <a href="/arsip" class="hover:text-white font-semibold">Kembali ke arsip</a>
+      </div>
     </div>
   </main>
 </Layout>

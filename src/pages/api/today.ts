@@ -53,7 +53,7 @@ export const GET: APIRoute = async ({ locals }) => {
         headers: {
             'Content-Type': 'application/json',
             'Content-Language': 'id',
-            'Cache-Control': 'public, max-age=3600, s-maxage=86400' // Cache for 1h browser, 24h CDN
+            'Cache-Control': 'public, max-age=300, s-maxage=300' // keep fresh after version bumps
         }
     });
 };

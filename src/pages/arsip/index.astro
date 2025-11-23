@@ -13,20 +13,22 @@ const description = 'Rekap dan arsip tantangan Siapa Lebih Tua? selama tujuh har
 ---
 
 <Layout title={title} description={description} canonical={`${Astro.url.origin}/arsip`}>
-  <main class="max-w-3xl mx-auto p-6 space-y-6">
-    <header class="space-y-2 text-center">
-      <p class="text-sm uppercase tracking-[0.2em] text-gray-500">Arsip Mingguan</p>
-      <h1 class="text-3xl font-black text-gray-900">Tantangan 7 Hari Terakhir</h1>
-      <p class="text-gray-600">Pilih tanggal untuk melihat duel dan fun fact yang pernah muncul.</p>
-    </header>
+  <main class="max-w-4xl mx-auto p-6 sm:p-8">
+    <div class="bg-slate-900/70 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+      <div class="inline-flex items-center px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] bg-sky-500/10 text-sky-100 border border-sky-400/30">Arsip Mingguan</div>
+      <header class="space-y-2 text-left">
+        <h1 class="text-4xl font-black text-white">Tantangan 7 Hari Terakhir</h1>
+        <p class="text-slate-300">Pilih tanggal untuk melihat duel dan fun fact yang pernah muncul.</p>
+      </header>
 
-    <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {dates.map((date) => (
-        <a href={`/arsip/${date}`} class="block p-4 rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition" aria-label={`Lihat arsip tanggal ${date}`}>
-          <div class="text-sm text-gray-500">{new Date(date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
-          <div class="font-semibold text-gray-900 mt-1">Tantangan {date}</div>
-        </a>
-      ))}
-    </section>
+      <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {dates.map((date) => (
+          <a href={`/arsip/${date}`} class="block p-4 rounded-2xl border border-slate-800 bg-slate-900/60 shadow-lg hover:border-sky-500/40 hover:shadow-sky-900/50 transition" aria-label={`Lihat arsip tanggal ${date}`}>
+            <div class="text-sm text-slate-400">{new Date(date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
+            <div class="font-semibold text-white mt-1">Tantangan {date}</div>
+          </a>
+        ))}
+      </section>
+    </div>
   </main>
 </Layout>

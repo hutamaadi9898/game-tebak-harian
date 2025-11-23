@@ -14,26 +14,29 @@ const structuredData = {
 ---
 
 <Layout title={title} description={description} structuredData={structuredData}>
-  <main class="max-w-4xl mx-auto p-8">
-    <h1 class="text-3xl font-bold mb-6">Atribusi</h1>
-    <p class="mb-8">Gambar dan data disediakan oleh Wikidata dan Wikimedia Commons di bawah lisensi Creative Commons.</p>
+  <main class="max-w-5xl mx-auto p-6 sm:p-8">
+    <div class="bg-slate-900/70 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+      <div class="inline-flex items-center px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] bg-indigo-500/10 text-indigo-100 border border-indigo-400/30">Atribusi</div>
+      <h1 class="text-4xl font-black text-white">Atribusi</h1>
+      <p class="text-slate-200">Gambar dan data disediakan oleh Wikidata dan Wikimedia Commons di bawah lisensi Creative Commons.</p>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {peopleData.map(person => (
-        <div class="flex items-center space-x-4 p-2 border rounded bg-white shadow-sm">
-          <img src={`/api/image/${person.id}`} alt={person.name} width="48" height="48" loading="lazy" decoding="async" class="w-12 h-12 rounded-full object-cover" />
-          <div class="overflow-hidden">
-            <div class="font-bold">{person.name}</div>
-            <a href={person.image} target="_blank" rel="noopener noreferrer" class="text-xs text-blue-500 hover:underline truncate block">
-                Sumber Gambar
-            </a>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {peopleData.map(person => (
+          <div class="flex items-center space-x-4 p-3 rounded-2xl border border-slate-800 bg-slate-900/60 shadow-lg">
+            <img src={`/api/image/${person.id}`} alt={person.name} width="48" height="48" loading="lazy" decoding="async" class="w-12 h-12 rounded-full object-cover" />
+            <div class="overflow-hidden">
+              <div class="font-semibold text-white truncate">{person.name}</div>
+              <a href={person.image} target="_blank" rel="noopener noreferrer" class="text-xs text-sky-300 hover:text-white underline-offset-4 hover:underline truncate block">
+                  Sumber Gambar
+              </a>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
 
-    <div class="mt-12 pt-8 border-t border-gray-200">
-        <a href="/" class="text-blue-600 hover:underline">&larr; Kembali ke Game</a>
+      <div class="pt-4">
+          <a href="/" class="inline-flex items-center gap-2 text-sky-300 hover:text-white font-semibold transition">&larr; Kembali ke Game</a>
+      </div>
     </div>
   </main>
 </Layout>
