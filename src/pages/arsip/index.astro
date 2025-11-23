@@ -1,0 +1,32 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const today = new Date();
+const dates = Array.from({ length: 7 }, (_, i) => {
+  const d = new Date(today);
+  d.setDate(today.getDate() - i);
+  return d.toISOString().split('T')[0];
+});
+
+const title = 'Arsip Tantangan Mingguan | Siapa Lebih Tua?';
+const description = 'Rekap dan arsip tantangan Siapa Lebih Tua? selama tujuh hari terakhir. Baca ulang duel, fun fact, dan bagikan hasilnya.';
+---
+
+<Layout title={title} description={description} canonical={`${Astro.url.origin}/arsip`}>
+  <main class="max-w-3xl mx-auto p-6 space-y-6">
+    <header class="space-y-2 text-center">
+      <p class="text-sm uppercase tracking-[0.2em] text-gray-500">Arsip Mingguan</p>
+      <h1 class="text-3xl font-black text-gray-900">Tantangan 7 Hari Terakhir</h1>
+      <p class="text-gray-600">Pilih tanggal untuk melihat duel dan fun fact yang pernah muncul.</p>
+    </header>
+
+    <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {dates.map((date) => (
+        <a href={`/arsip/${date}`} class="block p-4 rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition" aria-label={`Lihat arsip tanggal ${date}`}>
+          <div class="text-sm text-gray-500">{new Date(date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
+          <div class="font-semibold text-gray-900 mt-1">Tantangan {date}</div>
+        </a>
+      ))}
+    </section>
+  </main>
+</Layout>

@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = 'Tentang | Siapa Lebih Tua?';
+const description = 'Gambaran singkat tentang game tebak umur harian Siapa Lebih Tua?, cara bermain, dan sumber data publik yang dipakai.';
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: title,
+  description,
+  url: Astro.url.href
+};
+---
+
+<Layout title={title} description={description} structuredData={structuredData}>
+  <main class="max-w-2xl mx-auto p-8 prose lg:prose-xl">
+    <h1 class="text-3xl font-bold mb-6">Tentang Siapa Lebih Tua?</h1>
+    <p class="mb-4">Siapa Lebih Tua? adalah permainan trivia harian untuk menebak siapa yang lebih tua di antara dua tokoh publik Indonesia.</p>
+    <p class="mb-8">Tantangan baru dirilis setiap hari pukul 00:00 WIB dengan seed deterministik agar semua pemain mendapatkan soal yang sama. Setiap hari ada 10 duel berisi figur modern (penyanyi, YouTuber, aktor, komedian, model).</p>
+    
+    <h2 class="text-2xl font-bold mb-4">Cara Bermain</h2>
+    <ul class="list-disc pl-6 mb-8 space-y-2">
+      <li>Anda akan disajikan dua orang tokoh.</li>
+      <li>Klik pada orang yang menurut Anda lebih tua.</li>
+      <li>Setelah memilih, Anda langsung melihat tahun kelahiran dan fun fact singkat.</li>
+      <li>Cobalah mendapatkan skor sempurna 5/5 dan lanjutkan streak harian Anda.</li>
+    </ul>
+
+    <div class="mt-12 pt-8 border-t border-gray-200">
+        <a href="/" class="text-blue-600 hover:underline">&larr; Kembali ke Game</a>
+    </div>
+  </main>
+</Layout>

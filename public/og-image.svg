@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Siapa Lebih Tua? - Game Tebak Umur Harian</title>
+  <desc id="desc">Tantangan harian menebak siapa yang lebih tua di antara tokoh publik Indonesia.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#0ea5e9" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" rx="32" />
+  <g fill="#e2e8f0" font-family="'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif">
+    <text x="80" y="220" font-size="78" font-weight="800" letter-spacing="-1.5">Siapa Lebih Tua?</text>
+    <text x="80" y="290" font-size="32" font-weight="600" fill="#cbd5e1">Tantangan tebak umur harian tokoh Indonesia</text>
+    <text x="80" y="360" font-size="26" font-weight="500" fill="#cbd5e1">5 duel per hari · Main ringan di perangkat seluler · Data dari Wikidata</text>
+  </g>
+</svg>

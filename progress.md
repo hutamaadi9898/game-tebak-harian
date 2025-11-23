@@ -1,0 +1,24 @@
+# Progress Log
+
+- 2025-11-23: Added launch plan (plan.md) with phased checklists and created AGENTS.MD working rules per request.
+- [x] Data pipeline ready (Phase 0) - Implemented `scripts/fetch-wikidata.ts` with Zod validation and mock data fallback. Exported `src/data/people.json`.
+- [x] Daily matchups delivery (Phase 0) - Implemented `src/utils/game-logic.ts` for deterministic matchups and `src/pages/api/today.ts` for Edge API.
+- [x] Edge API (/api/today) (Phase 0) - Implemented with HMAC signing and caching.
+- [x] Anti-cheat + scoring (/api/score) (Phase 0) - Implemented `src/pages/api/score.ts` with signature verification.
+- [x] Game UI (mobile-first) (Phase 0) - Implemented `GameIsland` with Preact, Tailwind, and confetti.
+- [x] Content pages (Phase 0) - Created About, Privacy, Contact, and Attribution pages.
+- [x] Deploy free (Phase 0) - Configured `wrangler.jsonc` and project structure for Cloudflare Pages.
+- [x] Pivot to Indonesian Market (Phase 0) - Updated `plan.md`, localized UI/content to Indonesian, and adjusted `scripts/fetch-wikidata.ts` to fetch Indonesian public figures.
+- [x] Hardened AGENTS.md with stricter non-negotiables (perf budgets, zod-at-edges, cache-first) and clarified dependency/secret handling.
+- [x] Enforced Indonesian citizenship filter in Wikidata pipeline, added occupation/funFact enrichment, and regenerated `src/data/people.json`.
+- [x] Localized the game island fully to Indonesian with fun-fact reveals and graceful error handling for daily data fetches.
+- [x] Added SEO defaults (canonical, OG/Twitter, structured data), new OG image asset, and Cloudflare Web Analytics hook in layout + page metadata.
+- [x] Phase 1: UX polish (toasts, focused states, improved loading), responsive images with sizing, accessibility tweaks, and lightweight client error beacon (`/api/error`).
+- [x] Phase 2: Added D1-backed per-client streak store + rate limiting in `/api/score`, optional hashed email capture via `/api/subscribe`, and weekly archive pages (`/arsip`).
+- [x] Added automated tests for generator determinism and API contracts using `tsx --test` runner.
+- [x] Authored `tutorial.md` with dev/prod deployment steps (Pages + D1 + secrets) and updated `plan.md` checkmarks for phases 1–2.
+- [x] Disabled Cloudflare sessions in `astro.config.mjs` to remove unused KV binding requirement and tightened types for `PersonCard` props.
+- [x] Fixed `wrangler.jsonc` syntax (commas) and set Astro session driver to cookie to avoid SESSION KV binding warnings; confirmed `pnpm dev` runs clean.
+- [x] Added image proxy endpoint `/api/image/[id]` with Cache API to speed Wikidata images and wire UI + attribution to use proxied images.
+- [x] Improved Game UI: loading skeletons, progress bar, difficulty badges, and cached images for faster load on mobile.
+- [x] Added R2 image cache support via `IMAGE_BUCKET` binding; proxy now stores and serves from R2 then edge cache. Tutorial updated with R2 step and session envs.

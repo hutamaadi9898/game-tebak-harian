@@ -1,14 +1,86 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  image?: string;
+  noindex?: boolean;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title = 'Siapa Lebih Tua? | Game Tebak Umur Tokoh Indonesia',
+  description = 'Tebak siapa yang lebih tua di antara tokoh publik Indonesia. Tantangan baru setiap hari, ringan, dan ramah perangkat seluler.',
+  canonical = Astro.url.href,
+  image = `${Astro.url.origin}/og-image.svg`,
+  noindex = false,
+  structuredData = []
+} = Astro.props as Props;
+
+const jsonLd = Array.isArray(structuredData)
+  ? structuredData.filter(Boolean)
+  : structuredData
+    ? [structuredData]
+    : [];
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="id">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<meta name="theme-color" content="#0f172a" />
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={image} />
+		<meta property="og:locale" content="id_ID" />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={image} />
+
+		{jsonLd.map((schema) => (
+			<script type="application/ld+json">
+				{JSON.stringify(schema)}
+			</script>
+		))}
+
+		{import.meta.env.PUBLIC_CF_BEACON_TOKEN && (
+			<script
+				defer
+				src="https://static.cloudflareinsights.com/beacon.min.js"
+				data-cf-beacon={`{"token":"${import.meta.env.PUBLIC_CF_BEACON_TOKEN}"}`}
+			></script>
+		)}
 	</head>
-	<body>
-		<slot />
+	<body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen">
+		<div class="flex-grow">
+			<slot />
+		</div>
+		<footer class="py-6 text-center text-sm text-gray-500 border-t border-gray-200 mt-auto">
+			<div class="space-x-4">
+				<a href="/about" class="hover:text-gray-900">Tentang</a>
+				<a href="/privacy" class="hover:text-gray-900">Privasi</a>
+				<a href="/contact" class="hover:text-gray-900">Kontak</a>
+				<a href="/attribution" class="hover:text-gray-900">Atribusi</a>
+				<a href="/arsip" class="hover:text-gray-900">Arsip</a>
+			</div>
+			<div class="mt-2">
+				&copy; {new Date().getFullYear()} Siapa Lebih Tua?
+			</div>
+		</footer>
 	</body>
 </html>
 

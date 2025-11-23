@@ -1,11 +1,44 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import GameIsland from '../components/GameIsland';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const description = 'Tantangan harian menebak siapa yang lebih tua di antara tokoh publik Indonesia. Main 10 duel singkat, lihat jawaban, dan kembali esok hari.';
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Game",
+    name: "Siapa Lebih Tua?",
+    applicationCategory: "EducationalGame",
+    operatingSystem: "Web",
+    inLanguage: "id",
+    url: Astro.url.href,
+    description
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Siapa Lebih Tua?",
+    url: Astro.url.origin,
+    potentialAction: {
+      "@type": "PlayAction",
+      target: Astro.url.href
+    }
+  }
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+  title="Siapa Lebih Tua? | Tantangan Tebak Umur Harian"
+  description={description}
+  structuredData={structuredData}
+>
+  <main class="min-h-screen flex flex-col items-center justify-center py-12 px-4">
+    <h1 class="text-5xl font-black text-gray-900 mb-3 tracking-tight text-center">Siapa Lebih Tua?</h1>
+    <p class="text-gray-600 mb-8 text-center max-w-2xl text-lg">Tantangan harian menebak umur tokoh publik Indonesia. Pilih yang lebih tua di setiap duel, ungkap tahun kelahiran, dan jaga streak Anda. Kini 10 duel per hari dengan figur modern (penyanyi, YouTuber, aktor).</p>
+		
+		<div class="w-full max-w-md">
+			<GameIsland client:load />
+		</div>
+	</main>
 </Layout>

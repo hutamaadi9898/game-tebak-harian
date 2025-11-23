@@ -1,0 +1,78 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "guess-game",
+	"main": "./dist/_worker.js/index.js",
+	"compatibility_date": "2025-11-21",
+	"compatibility_flags": [
+		"nodejs_compat",
+		"global_fetch_strictly_public"
+	],
+	"assets": {
+		"binding": "ASSETS",
+		"directory": "./dist"
+	},
+	"observability": {
+		"enabled": true
+	},
+	"d1_databases": [
+		{
+			"binding": "guess_game_streaks",
+			"database_name": "guess-game-streaks",
+			"database_id": "e9b81098-b41b-48d4-9bc1-0b488961c15b",
+			"remote": true
+		}
+	],
+	/**
+	 * Smart Placement
+	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
+	 */
+	// "placement": { "mode": "smart" }
+	/**
+	 * Bindings
+	 * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
+	 * databases, object storage, AI inference, real-time communication and more.
+	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/
+	 */
+	/**
+	 * Environment Variables
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
+	 */
+	"vars": {
+		"GAME_SECRET": "dev-secret-change-in-prod",
+		"SUBSCRIPTION_SALT": "dev-subscription-salt"
+	},
+	/**
+	 * Note: Use secrets to store sensitive data.
+	 * https://developers.cloudflare.com/workers/configuration/secrets/
+	 */
+	"kv_namespaces": [
+		// {
+		//     "binding": "GAME_KV",
+		//     "id": "todo-create-kv-namespace-id"
+		// }
+	],
+	"r2_buckets": [
+		{
+			"binding": "IMAGE_BUCKET",
+			"bucket_name": "guess-game-images"
+		},
+		{
+			"bucket_name": "guess-game-images",
+			"binding": "guess_game_images"
+		}
+	],
+	/**
+	 * Static Assets
+	 * https://developers.cloudflare.com/workers/static-assets/binding/
+	 */
+	// "assets": { "directory": "./public/", "binding": "ASSETS" }
+	/**
+	 * Service Bindings (communicate between multiple Workers)
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
+	 */
+	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
+}

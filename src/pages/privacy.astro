@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = 'Privasi | Siapa Lebih Tua?';
+const description = 'Kebijakan privasi singkat untuk permainan Siapa Lebih Tua? yang mengutamakan privasi dan minim pelacakan.';
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "PrivacyPolicy",
+  name: title,
+  description,
+  url: Astro.url.href
+};
+---
+
+<Layout title={title} description={description} structuredData={structuredData}>
+  <main class="max-w-2xl mx-auto p-8 prose lg:prose-xl">
+    <h1 class="text-3xl font-bold mb-6">Kebijakan Privasi</h1>
+    <p class="mb-4">Terakhir diperbarui: 23 November 2025</p>
+    
+    <p class="mb-4">Kami menghargai privasi Anda. Game ini dirancang agar ramah privasi.</p>
+
+    <h2 class="text-2xl font-bold mb-4">Pengumpulan Data</h2>
+    <p class="mb-4">Kami tidak mengumpulkan informasi pribadi apa pun. Kami menggunakan penyimpanan lokal (local storage) di perangkat Anda untuk menyimpan kemajuan harian dan rekor kemenangan (streak) Anda.</p>
+    
+    <h2 class="text-2xl font-bold mb-4">Analitik</h2>
+    <p class="mb-4">Kami menggunakan Cloudflare Web Analytics, yang mengutamakan privasi dan tidak menggunakan cookie atau melacak Anda di seluruh situs.</p>
+
+    <div class="mt-12 pt-8 border-t border-gray-200">
+        <a href="/" class="text-blue-600 hover:underline">&larr; Kembali ke Game</a>
+    </div>
+  </main>
+</Layout>

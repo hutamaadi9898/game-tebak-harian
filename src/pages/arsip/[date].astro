@@ -1,0 +1,70 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import peopleData from '../../data/people.json';
+import { generateMatchups } from '../../utils/game-logic';
+import { z } from 'zod';
+
+export const prerender = false;
+
+const paramsSchema = z.object({ date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/) });
+
+let date: string;
+try {
+  ({ date } = paramsSchema.parse(Astro.params));
+} catch (error) {
+  date = '';
+}
+
+const requested = date ? new Date(date) : null;
+const today = new Date();
+const isValid = !!date && !!requested && !Number.isNaN(requested.valueOf()) && requested <= today;
+const matchups = isValid ? generateMatchups(peopleData, date) : [];
+const title = isValid ? `Arsip ${date} | Siapa Lebih Tua?` : 'Tanggal arsip tidak ditemukan';
+const description = isValid
+  ? `Lihat ulang duel dan fun fact yang tayang pada ${requested!.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}.`
+  : 'Tanggal arsip tidak tersedia atau formatnya salah.';
+---
+
+<Layout title={title} description={description} canonical={`${Astro.url.origin}/arsip/${date}`}>
+  <main class="max-w-4xl mx-auto p-6 space-y-8">
+    {isValid ? (
+      <>
+        <header class="space-y-2">
+          <p class="text-sm uppercase tracking-[0.2em] text-gray-500">Arsip</p>
+          <h1 class="text-3xl font-black text-gray-900">Tantangan {date}</h1>
+          <p class="text-gray-600">Duel yang tayang pada tanggal ini, beserta tahun lahir dan fun fact singkat.</p>
+        </header>
+
+        <section class="space-y-4">
+          {matchups.map((m, idx) => (
+            <article class="p-4 rounded-xl border border-gray-200 bg-white shadow-sm" aria-label={`Duel ${idx + 1}`}>
+              <div class="text-xs uppercase tracking-wide text-gray-500 mb-2">Duel {idx + 1} · {m.difficulty.toUpperCase()}</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[m.personA, m.personB].map((person) => (
+                  <div class="flex items-start space-x-3">
+                    <img src={person.image} alt={person.name} width="80" height="80" loading="lazy" decoding="async" class="w-20 h-20 rounded-full object-cover border border-gray-200" />
+                    <div class="space-y-1">
+                      <div class="font-semibold text-gray-900">{person.name}</div>
+                      {person.occupation && <div class="text-xs uppercase tracking-wide text-gray-500">{person.occupation}</div>}
+                      <div class="text-sm text-blue-700 font-mono">Lahir {person.birthYear}</div>
+                      {person.funFact && <div class="text-sm text-gray-700">{person.funFact}</div>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </article>
+          ))}
+        </section>
+      </>
+    ) : (
+      <div class="p-6 rounded-xl bg-rose-50 border border-rose-200 text-rose-800">
+        Tanggal arsip tidak tersedia atau belum tayang.
+      </div>
+    )}
+
+    <div class="pt-6 border-t border-gray-200 flex justify-between text-sm">
+      <a href="/" class="text-blue-600 hover:underline">Main tantangan hari ini</a>
+      <a href="/arsip" class="text-blue-600 hover:underline">Kembali ke arsip</a>
+    </div>
+  </main>
+</Layout>

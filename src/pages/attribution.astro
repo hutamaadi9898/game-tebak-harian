@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import peopleData from '../data/people.json';
+
+const title = 'Atribusi | Siapa Lebih Tua?';
+const description = 'Daftar atribusi sumber gambar dan data Wikidata/Wikimedia Commons yang digunakan di Siapa Lebih Tua?';
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: title,
+  description,
+  url: Astro.url.href
+};
+---
+
+<Layout title={title} description={description} structuredData={structuredData}>
+  <main class="max-w-4xl mx-auto p-8">
+    <h1 class="text-3xl font-bold mb-6">Atribusi</h1>
+    <p class="mb-8">Gambar dan data disediakan oleh Wikidata dan Wikimedia Commons di bawah lisensi Creative Commons.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {peopleData.map(person => (
+        <div class="flex items-center space-x-4 p-2 border rounded bg-white shadow-sm">
+          <img src={`/api/image/${person.id}`} alt={person.name} width="48" height="48" loading="lazy" decoding="async" class="w-12 h-12 rounded-full object-cover" />
+          <div class="overflow-hidden">
+            <div class="font-bold">{person.name}</div>
+            <a href={person.image} target="_blank" rel="noopener noreferrer" class="text-xs text-blue-500 hover:underline truncate block">
+                Sumber Gambar
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-gray-200">
+        <a href="/" class="text-blue-600 hover:underline">&larr; Kembali ke Game</a>
+    </div>
+  </main>
+</Layout>

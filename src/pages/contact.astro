@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = 'Kontak | Siapa Lebih Tua?';
+const description = 'Hubungi tim Siapa Lebih Tua? untuk masukan, koreksi data, atau laporan bug.';
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: title,
+  description,
+  url: Astro.url.href
+};
+---
+
+<Layout title={title} description={description} structuredData={structuredData}>
+  <main class="max-w-2xl mx-auto p-8 prose lg:prose-xl">
+    <h1 class="text-3xl font-bold mb-6">Hubungi Kami</h1>
+    
+    <p class="mb-4">Punya masukan, koreksi data, atau menemukan bug? Kami ingin mendengarnya.</p>
+
+    <p class="mb-4">Email kami di: <a href="mailto:hello@siapalebihtua.game" class="text-blue-600 hover:underline">hello@siapalebihtua.game</a>. Kami berupaya merespons dalam 1x24 jam.</p>
+
+    <div class="mt-12 pt-8 border-t border-gray-200">
+        <a href="/" class="text-blue-600 hover:underline">&larr; Kembali ke Game</a>
+    </div>
+  </main>
+</Layout>
