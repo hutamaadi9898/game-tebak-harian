@@ -22,3 +22,4 @@
 - [x] Added image proxy endpoint `/api/image/[id]` with Cache API to speed Wikidata images and wire UI + attribution to use proxied images.
 - [x] Improved Game UI: loading skeletons, progress bar, difficulty badges, and cached images for faster load on mobile.
 - [x] Added R2 image cache support via `IMAGE_BUCKET` binding; proxy now stores and serves from R2 then edge cache. Tutorial updated with R2 step and session envs.
+- [x] UI Overhaul (Phase 3) - Redesigned for "Teenager" demographic: Dark mode default, "Outfit" font, glassmorphism cards, gradient accents, and custom animations (pop, fade-in-up).

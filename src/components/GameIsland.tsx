@@ -158,15 +158,15 @@ export default function GameIsland() {
 
     if (gameState === 'loading') {
         return (
-            <div className="max-w-md mx-auto p-4 space-y-4">
-                <div className="h-4 w-28 bg-slate-200 rounded animate-pulse" />
-                <div className="h-6 w-48 bg-slate-200 rounded animate-pulse" />
+            <div className="max-w-md mx-auto p-4 space-y-6">
+                <div className="h-4 w-32 bg-slate-800 rounded-full animate-pulse mx-auto" />
+                <div className="h-2 w-full bg-slate-800 rounded-full animate-pulse" />
                 <div className="grid grid-cols-2 gap-4">
                     {[1, 2].map((i) => (
-                        <div key={i} className="p-4 bg-white rounded-2xl shadow-lg space-y-3">
-                            <div className="w-24 h-24 mx-auto rounded-full bg-slate-200 animate-pulse" />
-                            <div className="h-4 bg-slate-200 rounded animate-pulse" />
-                            <div className="h-3 bg-slate-100 rounded animate-pulse" />
+                        <div key={i} className="aspect-[3/4] p-4 bg-slate-800/50 rounded-3xl border border-slate-700/50 space-y-4 flex flex-col items-center justify-center">
+                            <div className="w-24 h-24 rounded-full bg-slate-700 animate-pulse" />
+                            <div className="h-4 w-20 bg-slate-700 rounded animate-pulse" />
+                            <div className="h-3 w-16 bg-slate-700/50 rounded animate-pulse" />
                         </div>
                     ))}
                 </div>
@@ -176,12 +176,13 @@ export default function GameIsland() {
 
     if (error) {
         return (
-            <div className="text-center p-4 bg-white rounded-2xl shadow-xl max-w-sm mx-auto mt-10">
-                <h2 className="text-2xl font-bold mb-3 text-gray-800">Ada kendala</h2>
-                <p className="text-gray-600 mb-4">{error}</p>
+            <div className="text-center p-8 bg-slate-800/80 backdrop-blur-md rounded-3xl shadow-2xl border border-slate-700 max-w-sm mx-auto mt-10">
+                <div className="text-4xl mb-4">😕</div>
+                <h2 className="text-2xl font-bold mb-3 text-white">Ada kendala</h2>
+                <p className="text-slate-400 mb-6">{error}</p>
                 <button
                     onClick={() => window.location.reload()}
-                    className="bg-gray-900 text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-800 transition"
+                    className="bg-white text-slate-900 px-6 py-3 rounded-full font-bold hover:bg-slate-200 transition active:scale-95"
                 >
                     Muat ulang
                 </button>
@@ -191,25 +192,41 @@ export default function GameIsland() {
 
     if (gameState === 'finished') {
         return (
-            <div className="text-center p-4 bg-white rounded-2xl shadow-xl max-w-sm mx-auto mt-10">
-                <h2 className="text-3xl font-bold mb-4 text-gray-800">Permainan Selesai!</h2>
-                <div className="text-6xl font-black text-blue-600 mb-4">{score} / {gameData?.matchups.length}</div>
-                <p className="text-gray-600 mb-8">Kembali lagi besok untuk tantangan baru!</p>
+            <div className="text-center p-8 bg-slate-800/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-700/50 max-w-sm mx-auto mt-4 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+
+                <h2 className="text-3xl font-black mb-2 text-white tracking-tight">Permainan Selesai!</h2>
+                <p className="text-slate-400 mb-6 text-sm">Tantangan hari ini tuntas.</p>
+
+                <div className="relative inline-block mb-8">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 blur-xl opacity-50 rounded-full"></div>
+                    <div className="relative text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-300">
+                        {score}<span className="text-4xl text-slate-500">/{gameData?.matchups.length}</span>
+                    </div>
+                </div>
+
                 {resultData?.streak && (
-                    <div className="mb-6 text-sm text-gray-700" aria-live="polite">
-                        <div className="font-semibold">Streak sempurna: {resultData.streak.streak} hari</div>
-                        <div>Rekor terbaik: {resultData.streak.best} hari</div>
+                    <div className="mb-8 grid grid-cols-2 gap-3">
+                        <div className="bg-slate-900/50 p-3 rounded-2xl border border-slate-700/50">
+                            <div className="text-xs text-slate-400 uppercase tracking-wider font-bold mb-1">Streak</div>
+                            <div className="text-xl font-black text-orange-400">🔥 {resultData.streak.streak}</div>
+                        </div>
+                        <div className="bg-slate-900/50 p-3 rounded-2xl border border-slate-700/50">
+                            <div className="text-xs text-slate-400 uppercase tracking-wider font-bold mb-1">Terbaik</div>
+                            <div className="text-xl font-black text-emerald-400">🏆 {resultData.streak.best}</div>
+                        </div>
                     </div>
                 )}
-                <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-left mb-6">
-                    <div className="font-semibold mb-2 text-gray-800">Dapatkan kabar rilis dan recap mingguan?</div>
-                    <div className="flex flex-col gap-2">
+
+                <div className="bg-slate-900/80 border border-slate-700 rounded-2xl p-5 text-left mb-8">
+                    <div className="font-bold mb-2 text-white text-sm">Dapatkan notifikasi & recap? 📩</div>
+                    <div className="flex flex-col gap-3">
                         <input
                             type="email"
                             value={email}
                             onInput={(e: any) => setEmail(e.target.value)}
-                            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
-                            placeholder="email@contoh.com"
+                            className="w-full rounded-xl border border-slate-600 bg-slate-800 px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                            placeholder="email@kamu.com"
                             aria-label="Email opsional"
                             disabled={emailStatus === 'loading' || emailStatus === 'done'}
                         />
@@ -233,17 +250,18 @@ export default function GameIsland() {
                                     reportClientError(err as Error, { scope: 'subscribe' });
                                 }
                             }}
-                            className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-3 rounded-xl font-bold hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-900/20"
                             disabled={emailStatus === 'loading' || emailStatus === 'done'}
                         >
-                            {emailStatus === 'loading' ? 'Mengirim...' : emailStatus === 'done' ? 'Tersimpan' : 'Kirim' }
+                            {emailStatus === 'loading' ? 'Mengirim...' : emailStatus === 'done' ? '✅ Tersimpan' : 'Kirim'}
                         </button>
-                        <p className="text-xs text-gray-500">Opsional. Kami simpan secara hash dan tidak membagikannya.</p>
+                        <p className="text-[10px] text-slate-500 text-center">Kami menjaga privasimu. Unsubscribe kapan saja.</p>
                     </div>
                 </div>
+
                 <button
                     onClick={() => window.location.reload()}
-                    className="bg-gray-900 text-white px-8 py-3 rounded-full font-bold hover:bg-gray-800 transition transform hover:scale-105"
+                    className="w-full bg-white text-slate-900 px-8 py-4 rounded-full font-black hover:bg-slate-200 transition transform hover:scale-[1.02] active:scale-[0.98]"
                 >
                     Main Lagi
                 </button>
@@ -256,36 +274,43 @@ export default function GameIsland() {
     const m = gameData.matchups[currentIndex];
 
     return (
-        <div className="max-w-2xl mx-auto p-4 sm:p-6 relative min-h-[520px] flex flex-col justify-center gap-5">
-            <div className="pointer-events-none fixed top-4 inset-x-0 flex justify-center z-50" aria-live="polite">
+        <div className="max-w-2xl mx-auto p-4 relative min-h-[520px] flex flex-col justify-center gap-6">
+            <div className="pointer-events-none fixed top-6 inset-x-0 flex justify-center z-50" aria-live="polite">
                 {toast && (
-                    <div className={`px-4 py-2 rounded-full shadow-lg text-sm font-semibold text-white ${toast.tone === 'success' ? 'bg-emerald-600' : 'bg-rose-600'}`}>
+                    <div className={`px-6 py-3 rounded-full shadow-2xl text-sm font-bold text-white animate-pop ${toast.tone === 'success' ? 'bg-emerald-500' : 'bg-rose-500'}`}>
                         {toast.message}
                     </div>
                 )}
             </div>
-            <div className="flex justify-between items-center text-sm font-semibold text-gray-800">
-                <span>Tantangan {gameData?.date}</span>
-                <span className="text-gray-500">Skor: {score}</span>
+
+            <div className="flex justify-between items-end px-2">
+                <div className="text-slate-400 text-xs font-bold uppercase tracking-widest">
+                    {gameData?.date}
+                </div>
+                <div className="flex items-center gap-2">
+                    <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">Skor</span>
+                    <span className="text-2xl font-black text-white">{score}</span>
+                </div>
             </div>
-            <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+
+            <div className="relative w-full h-3 bg-slate-800 rounded-full overflow-hidden shadow-inner">
                 <div
-                    className="h-2 bg-blue-600 transition-all"
+                    className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transition-all duration-500 ease-out"
                     style={{ width: `${((currentIndex) / (gameData.matchups.length)) * 100}%` }}
                     aria-hidden
                 />
             </div>
-            <div className="flex justify-end">
-                <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                    m.difficulty === 'hard' ? 'bg-rose-100 text-rose-700' :
-                    m.difficulty === 'medium' ? 'bg-amber-100 text-amber-700' :
-                    'bg-emerald-100 text-emerald-700'
-                }`}>
-                    {m.difficulty === 'hard' ? 'Sulit' : m.difficulty === 'medium' ? 'Sedang' : 'Mudah'}
+
+            <div className="flex justify-center">
+                <span className={`text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full border ${m.difficulty === 'hard' ? 'bg-rose-950/30 text-rose-400 border-rose-500/30' :
+                        m.difficulty === 'medium' ? 'bg-amber-950/30 text-amber-400 border-amber-500/30' :
+                            'bg-emerald-950/30 text-emerald-400 border-emerald-500/30'
+                    }`}>
+                    Level: {m.difficulty === 'hard' ? 'Sulit' : m.difficulty === 'medium' ? 'Sedang' : 'Mudah'}
                 </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 relative mt-2">
                 <PersonCard
                     person={m.personA}
                     onClick={() => handleGuess(m.personA.id)}
@@ -295,8 +320,10 @@ export default function GameIsland() {
                     isWrong={selectedId === m.personA.id && correctId !== m.personA.id}
                 />
 
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-12 h-12 flex items-center justify-center font-black text-gray-800 shadow-lg z-10 border-4 border-gray-100" aria-hidden>
-                    VS
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
+                    <div className="bg-slate-900 rounded-full w-14 h-14 flex items-center justify-center font-black text-white shadow-xl border-4 border-slate-800 ring-4 ring-purple-500/20">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-br from-yellow-400 to-orange-500 text-lg">VS</span>
+                    </div>
                 </div>
 
                 <PersonCard
@@ -309,48 +336,79 @@ export default function GameIsland() {
                 />
             </div>
 
-            <div className="text-center mt-8 text-xl font-bold text-gray-800">
-                Siapa yang lebih tua?
+            <div className="text-center mt-4">
+                <p className="text-slate-400 text-sm font-medium animate-pulse">
+                    Pilih yang <span className="text-white font-bold">lebih tua</span>
+                </p>
             </div>
         </div>
     );
 } function PersonCard({ person, onClick, state, selected, isCorrect, isWrong }: PersonCardProps) {
-    let borderClass = "border-transparent ring-0";
+    let borderClass = "border-slate-700 hover:border-slate-500";
+    let ringClass = "ring-0";
+    let bgClass = "bg-slate-800/50 backdrop-blur-sm";
     let opacityClass = "opacity-100";
+    let scaleClass = "scale-100";
 
     if (state === 'revealed') {
-        if (isCorrect) borderClass = "border-green-500 ring-4 ring-green-200";
-        else if (isWrong) borderClass = "border-red-500 ring-4 ring-red-200";
-        else opacityClass = "opacity-40 grayscale";
+        if (isCorrect) {
+            borderClass = "border-emerald-500";
+            ringClass = "ring-4 ring-emerald-500/20";
+            bgClass = "bg-emerald-950/40";
+        } else if (isWrong) {
+            borderClass = "border-rose-500";
+            ringClass = "ring-4 ring-rose-500/20";
+            bgClass = "bg-rose-950/40";
+        } else {
+            opacityClass = "opacity-30 grayscale";
+            scaleClass = "scale-95";
+        }
     }
 
     return (
         <button
             onClick={onClick}
             disabled={state !== 'playing'}
-            aria-label={`Pilih ${person.name}${person.occupation ? `, ${person.occupation}` : ''}`}
-            className={`relative group flex flex-col items-center p-4 bg-white rounded-2xl shadow-lg transition-all duration-300 transform hover:-translate-y-1 active:scale-95 border-2 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200 ${borderClass} ${opacityClass} w-full h-full`}
+            aria-label={`Pilih ${person.name}`}
+            className={`
+                relative group flex flex-col items-center p-6 rounded-3xl shadow-2xl 
+                transition-all duration-300 ease-out
+                border-2 ${borderClass} ${ringClass} ${bgClass} ${opacityClass} ${scaleClass}
+                w-full h-full
+                hover:-translate-y-1 active:scale-[0.98]
+                focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-purple-500/50
+            `}
         >
-            <div className="w-24 h-24 mb-4 rounded-full overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 shadow-inner ring-4 ring-white">
-                <img
-                    src={`/api/image/${person.id}`}
-                    alt={person.name}
-                    width="96"
-                    height="96"
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover transition duration-500 ease-out"
-                    sizes="96px"
-                />
+            <div className="relative w-28 h-28 mb-5 rounded-full p-1 bg-gradient-to-br from-blue-400 to-purple-500 shadow-lg group-hover:shadow-purple-500/30 transition-shadow duration-300">
+                <div className="w-full h-full rounded-full overflow-hidden bg-slate-900 border-2 border-slate-900">
+                    <img
+                        src={`/api/image/${person.id}`}
+                        alt={person.name}
+                        width="112"
+                        height="112"
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                </div>
             </div>
-            <h3 className="font-bold text-lg leading-tight mb-2 text-gray-900">{person.name}</h3>
 
-            <div className={`transition-all duration-500 overflow-hidden ${state === 'revealed' ? 'max-h-32 opacity-100' : 'max-h-0 opacity-0'}`}>
-                <div className="text-sm font-mono font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+            <h3 className="font-bold text-xl leading-tight mb-1 text-white group-hover:text-purple-200 transition-colors">
+                {person.name}
+            </h3>
+
+            {person.occupation && (
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+                    {person.occupation}
+                </p>
+            )}
+
+            <div className={`transition-all duration-500 overflow-hidden w-full ${state === 'revealed' ? 'max-h-40 opacity-100 mt-2' : 'max-h-0 opacity-0'}`}>
+                <div className="inline-block text-lg font-black text-white bg-gradient-to-r from-blue-500 to-purple-600 px-5 py-1.5 rounded-full shadow-lg mb-3 animate-fade-in-up">
                     {person.birthYear}
                 </div>
                 {person.funFact && (
-                    <div className="text-xs text-gray-600 mt-3 leading-snug">
+                    <div className="text-xs text-slate-300 mt-1 leading-relaxed border-t border-white/10 pt-3 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
                         {person.funFact}
                     </div>
                 )}

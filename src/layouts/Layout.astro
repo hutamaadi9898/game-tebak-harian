@@ -51,6 +51,10 @@ const jsonLd = Array.isArray(structuredData)
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={image} />
 
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+
 		{jsonLd.map((schema) => (
 			<script type="application/ld+json">
 				{JSON.stringify(schema)}
@@ -65,19 +69,20 @@ const jsonLd = Array.isArray(structuredData)
 			></script>
 		)}
 	</head>
-	<body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen">
+	<body class="bg-slate-950 text-white flex flex-col min-h-screen font-['Outfit',sans-serif] selection:bg-fuchsia-500 selection:text-white overflow-x-hidden">
+		<div class="fixed inset-0 -z-10 h-full w-full bg-slate-950 bg-[radial-gradient(circle_500px_at_50%_200px,#3b0764,transparent)]"></div>
 		<div class="flex-grow">
 			<slot />
 		</div>
-		<footer class="py-6 text-center text-sm text-gray-500 border-t border-gray-200 mt-auto">
-			<div class="space-x-4">
-				<a href="/about" class="hover:text-gray-900">Tentang</a>
-				<a href="/privacy" class="hover:text-gray-900">Privasi</a>
-				<a href="/contact" class="hover:text-gray-900">Kontak</a>
-				<a href="/attribution" class="hover:text-gray-900">Atribusi</a>
-				<a href="/arsip" class="hover:text-gray-900">Arsip</a>
+		<footer class="py-8 text-center text-sm text-slate-400 border-t border-slate-800/50 mt-auto backdrop-blur-sm">
+			<div class="space-x-4 font-medium">
+				<a href="/about" class="hover:text-white transition-colors">Tentang</a>
+				<a href="/privacy" class="hover:text-white transition-colors">Privasi</a>
+				<a href="/contact" class="hover:text-white transition-colors">Kontak</a>
+				<a href="/attribution" class="hover:text-white transition-colors">Atribusi</a>
+				<a href="/arsip" class="hover:text-white transition-colors">Arsip</a>
 			</div>
-			<div class="mt-2">
+			<div class="mt-4 opacity-60">
 				&copy; {new Date().getFullYear()} Siapa Lebih Tua?
 			</div>
 		</footer>
