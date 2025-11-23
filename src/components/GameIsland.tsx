@@ -73,7 +73,7 @@ export default function GameIsland() {
             setClientId(newId);
 
             try {
-                const res = await fetch('/api/today', { headers: { 'Accept-Language': 'id' } });
+                const res = await fetch('/api/today?v=2', { headers: { 'Accept-Language': 'id' } });
                 if (!res.ok) throw new Error('Gagal memuat tantangan');
                 const data = await res.json();
                 setGameData(data);
@@ -158,15 +158,15 @@ export default function GameIsland() {
 
     if (gameState === 'loading') {
         return (
-            <div className="max-w-md mx-auto p-4 space-y-6">
-                <div className="h-4 w-32 bg-slate-800 rounded-full animate-pulse mx-auto" />
+            <div className="max-w-2xl mx-auto p-6 space-y-6">
+                <div className="h-4 w-40 bg-slate-800 rounded-full animate-pulse mx-auto" />
                 <div className="h-2 w-full bg-slate-800 rounded-full animate-pulse" />
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {[1, 2].map((i) => (
-                        <div key={i} className="aspect-[3/4] p-4 bg-slate-800/50 rounded-3xl border border-slate-700/50 space-y-4 flex flex-col items-center justify-center">
-                            <div className="w-24 h-24 rounded-full bg-slate-700 animate-pulse" />
-                            <div className="h-4 w-20 bg-slate-700 rounded animate-pulse" />
-                            <div className="h-3 w-16 bg-slate-700/50 rounded animate-pulse" />
+                        <div key={i} className="aspect-[3/4] p-5 bg-slate-900 rounded-3xl border border-slate-800 space-y-4 flex flex-col items-center justify-center">
+                            <div className="w-28 h-28 rounded-3xl bg-slate-800 animate-pulse" />
+                            <div className="h-4 w-28 bg-slate-800 rounded animate-pulse" />
+                            <div className="h-3 w-20 bg-slate-800 rounded animate-pulse" />
                         </div>
                     ))}
                 </div>
@@ -274,7 +274,7 @@ export default function GameIsland() {
     const m = gameData.matchups[currentIndex];
 
     return (
-        <div className="max-w-2xl mx-auto p-4 relative min-h-[520px] flex flex-col justify-center gap-6">
+        <div className="max-w-2xl mx-auto p-5 sm:p-8 relative min-h-[520px] flex flex-col justify-center gap-6">
             <div className="pointer-events-none fixed top-6 inset-x-0 flex justify-center z-50" aria-live="polite">
                 {toast && (
                     <div className={`px-6 py-3 rounded-full shadow-2xl text-sm font-bold text-white animate-pop ${toast.tone === 'success' ? 'bg-emerald-500' : 'bg-rose-500'}`}>
@@ -302,9 +302,9 @@ export default function GameIsland() {
             </div>
 
             <div className="flex justify-center">
-                <span className={`text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full border ${m.difficulty === 'hard' ? 'bg-rose-950/30 text-rose-400 border-rose-500/30' :
-                        m.difficulty === 'medium' ? 'bg-amber-950/30 text-amber-400 border-amber-500/30' :
-                            'bg-emerald-950/30 text-emerald-400 border-emerald-500/30'
+                <span className={`text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full border ${m.difficulty === 'hard' ? 'bg-rose-900 text-rose-100 border-rose-600/60' :
+                        m.difficulty === 'medium' ? 'bg-amber-900 text-amber-100 border-amber-600/60' :
+                            'bg-emerald-900 text-emerald-100 border-emerald-600/60'
                     }`}>
                     Level: {m.difficulty === 'hard' ? 'Sulit' : m.difficulty === 'medium' ? 'Sedang' : 'Mudah'}
                 </span>
@@ -321,8 +321,8 @@ export default function GameIsland() {
                 />
 
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
-                    <div className="bg-slate-900 rounded-full w-14 h-14 flex items-center justify-center font-black text-white shadow-xl border-4 border-slate-800 ring-4 ring-purple-500/20">
-                        <span className="text-transparent bg-clip-text bg-gradient-to-br from-yellow-400 to-orange-500 text-lg">VS</span>
+                    <div className="bg-slate-900 rounded-full w-14 h-14 flex items-center justify-center font-black text-white shadow-xl border-4 border-slate-800">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-br from-sky-400 to-cyan-300 text-lg">VS</span>
                     </div>
                 </div>
 
