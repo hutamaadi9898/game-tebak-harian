@@ -112,5 +112,15 @@ export function generateMatchups(people: Person[], dateSeed: string, count: numb
         }
     }
 
-    return matchups;
+    // Randomize orientation per pair for fairness
+    return matchups.map((m) => {
+        if (random() > 0.5) {
+            return {
+                ...m,
+                personA: m.personB,
+                personB: m.personA
+            };
+        }
+        return m;
+    });
 }

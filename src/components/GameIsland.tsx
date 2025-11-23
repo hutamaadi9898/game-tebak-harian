@@ -64,6 +64,7 @@ export default function GameIsland() {
     const [clientId, setClientId] = useState<string | null>(null);
     const [email, setEmail] = useState('');
     const [emailStatus, setEmailStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
+    const [alreadyPlayed, setAlreadyPlayed] = useState(false);
 
     useEffect(() => {
         const loadGame = async () => {
@@ -77,7 +78,14 @@ export default function GameIsland() {
                 if (!res.ok) throw new Error('Gagal memuat tantangan');
                 const data = await res.json();
                 setGameData(data);
-                setGameState('playing');
+                const playedDate = localStorage.getItem('slt-played-date');
+                if (playedDate === data.date) {
+                    setAlreadyPlayed(true);
+                    setGameState('finished');
+                    setToast({ message: 'Kamu sudah main hari ini. Kembali besok!', tone: 'error' });
+                } else {
+                    setGameState('playing');
+                }
             } catch (err) {
                 console.error(err);
                 setError('Gagal memuat tantangan hari ini. Coba muat ulang.');
@@ -147,6 +155,7 @@ export default function GameIsland() {
             });
             if (res.status === 409) {
                 setToast({ message: 'Kamu sudah main hari ini. Kembali besok!', tone: 'error' });
+                setAlreadyPlayed(true);
                 return;
             }
             const data = await res.json();
@@ -154,6 +163,7 @@ export default function GameIsland() {
             if (data.score === gameData.matchups.length) {
                 confetti({ particleCount: 150, spread: 100 });
             }
+            localStorage.setItem('slt-played-date', gameData.date);
         } catch (e) {
             console.error(e);
             reportClientError(e as Error, { scope: 'submit-score' });
@@ -276,6 +286,22 @@ export default function GameIsland() {
     if (!gameData) return null;
 
     const m = gameData.matchups[currentIndex];
+
+    if (alreadyPlayed && gameData) {
+        return (
+            <div className="max-w-xl mx-auto p-6 sm:p-8 bg-slate-900/80 rounded-3xl border border-slate-800 shadow-2xl text-center space-y-4">
+                <div className="text-4xl">✅</div>
+                <h2 className="text-2xl font-black text-white">Sudah main hari ini</h2>
+                <p className="text-slate-300">Kembali lagi besok ({gameData.date}) untuk tantangan baru.</p>
+                <button
+                    onClick={() => window.location.reload()}
+                    className="bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold px-6 py-3 rounded-xl transition active:scale-95"
+                >
+                    Muat ulang
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div className="max-w-2xl mx-auto p-5 sm:p-8 relative min-h-[520px] flex flex-col justify-center gap-6">
